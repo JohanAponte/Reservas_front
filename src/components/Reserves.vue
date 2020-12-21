@@ -99,7 +99,8 @@
       </b-form-group>
 
       <div class="buttons text-center">
-        <b-button type="submit" variant="outline-info">Continue</b-button>
+        <b-button v-on:click="makeRegister" type="submit" variant="outline-info">Continue</b-button>
+        
         <b-button type="reset" variant="outline-danger">Reset</b-button>
       </div>
     </b-form>
@@ -153,6 +154,18 @@ export default {
         this.show = true;
       });
     },
+    makeRegister: function () {
+      let self = this;
+      axios
+        .post("http://127.0.0.1:8000/client/add/")
+        .then((response) => {
+          self.registers = response.data;
+        })
+        .catch((error) => {
+          if (error.response.status == "404") alert("ERROR 404: Usuario no encontrado.");
+         
+        }); 
+  },
   },
 };
 </script>

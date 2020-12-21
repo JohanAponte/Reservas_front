@@ -18,9 +18,8 @@
         <form v-on:submit.prevent="makeQuery">
           <label class="label"><h3>Reservation code</h3></label>
           <input class="inputcol" type="text" v-model="id_register" />
-          <b-button v-on:click="makeQuery" class="btnpin" type="submit" variant="primary"
-            >Buscar</b-button
-          >
+          <b-button v-on:click="makeQuery" class="btnpin" type="submit" variant="primary">Search</b-button>
+          <b-button v-on:click="makeQuery2" class="btnpin2" type="submit" variant="primary">Delete guest</b-button>
           <br />
           <br />
         </form>
@@ -68,11 +67,12 @@ export default {
       registers: [],
     };
   },
+  
   methods: {
     makeQuery: function () {
       let self = this;
       axios
-        .get("https://reservas-hotel-app.herokuapp.com/client/mybooking/" + this.id_register)
+        .get("http://127.0.0.1:8000/client/mybooking/" + this.id_register)
         .then((response) => {
           self.registers = response.data;
         })
@@ -81,7 +81,22 @@ export default {
 
         });
     },
+      makeQuery2: function () {
+      let self = this;
+      axios
+        .delete("http://127.0.0.1:8000/client/delete/" + this.id_register)
+        .then((response) => {
+          self.registers = response.registers;
+          //self.name = "";
+          //this.$refs["name"].value = "";
+        })
+        .catch((error) => {
+          if (error.response.status == "404") alert("ERROR 404: Usuario no encontrado.");
+         
+        }); 
   },
+  },
+//},
 };
 </script>
 
@@ -103,6 +118,15 @@ export default {
 }
 
 .btnpin {
+  background: rgba(118, 164, 175, 0.459);
+  padding: 6px;
+  border-radius: 3px;
+  font-family: "Yanone Kaffeesatz", sans-serif;
+  font-size: 25px;
+  color: #fff;
+  width: 20%;
+}
+.btnpin2 {
   background: rgba(118, 164, 175, 0.459);
   padding: 6px;
   border-radius: 3px;
